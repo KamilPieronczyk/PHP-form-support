@@ -30,6 +30,11 @@ class Form
             echo 'Error';
           }
           break;
+        case 'special':
+          if (!$this->add_option($field_name,call_user_func($field_name))) {
+            echo 'Error';
+          }
+          break;
         default:
           if (isset($_POST[$field_name])) {
             if (!$this->add_option($field_name,$_POST[$field_name])) {
@@ -78,12 +83,12 @@ class Form
     else return 0;
   }
 
-  public function get_option($option_name, $form_id='')
+  public function get_option($option_name)
   {
-    if ($form_id == '') {
+    if ($this->form_name == '') {
       $sql = "SELECT value FROM options WHERE option_name = '$option_name' AND form_id = ''";
     } else {
-      $sql = "SELECT value FROM options WHERE option_name = '$option_name' AND form_id = '$form_id'";
+      $sql = "SELECT value FROM options WHERE option_name = '$option_name' AND form_id = '$this->form_name'";
     }
     $result = conn()->query($sql);
     if (@$result->num_rows>0) {

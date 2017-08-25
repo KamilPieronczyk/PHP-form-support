@@ -3,7 +3,19 @@ require 'connect.php';
 require 'Form.class.php';
 require 'functions.php';
 ?>
-
+<?php
+  function nick() {
+    if (isset($_POST['nick'])) {
+      return $_POST['nick'];
+    }
+  }
+  $form = new Form ('example', array(
+    'text' => 'password',
+    'special' => 'nick',
+    'checkbox' => 'check'
+  ));
+  $form->send();
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -21,6 +33,10 @@ require 'functions.php';
         <label for="exampleInputPassword1">Password</label>
         <input type="text" name="password" class="form-control" id="exampleInputPassword1" value="<?php echo get_option('password','example') ?>">
       </fieldset>
+      <fieldset class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="text" name="nick" class="form-control" id="exampleInputPassword1" value="<?php echo get_option('nick','example') ?>">
+      </fieldset>
       <div class="checkbox">
         <label>
           <input type="checkbox" name='check' <?php if (get_option('check','example')) echo 'checked'?>> Check me out
@@ -33,11 +49,3 @@ require 'functions.php';
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </body>
 </html>
-
-<?php
-  $form = new Form ('example', array(
-    'text' => 'password',
-    'checkbox' => 'check'
-  ));
-  $form->send();
-?>
