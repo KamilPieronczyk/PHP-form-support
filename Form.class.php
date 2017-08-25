@@ -25,22 +25,49 @@ class Form
     foreach ($this->fields as $type => $field_name) {
       switch ($type) {
         case 'checkbox':
-          if (isset($_POST[$field_name])) $value = 1; else $value = 0;
-          if (!$this->add_option($field_name,$value)) {
-            echo 'Error';
+          if (is_array($field_name)) {
+            foreach ($field_name as $name) {
+              if (isset($_POST[$name])) $value = 1; else $value = 0;
+              if (!$this->add_option($name,$value)) {
+                echo 'Error';
+              }
+            }
+          } else {
+            if (isset($_POST[$field_name])) $value = 1; else $value = 0;
+            if (!$this->add_option($field_name,$value)) {
+              echo 'Error';
+            }
           }
           break;
         case 'special':
-          if (!$this->add_option($field_name,call_user_func($field_name))) {
-            echo 'Error';
+          if (is_array($field_name)) {
+            foreach ($field_name as $name) {
+              if (!$this->add_option($name,call_user_func($name))) {
+                echo 'Error';
+              }
+            }
+          } else {
+            if (!$this->add_option($field_name,call_user_func($field_name))) {
+              echo 'Error';
+            }
           }
           break;
         default:
+        if (is_array($field_name)) {
+          foreach ($field_name as $name) {
+            if (isset($_POST[$name])) {
+              if (!$this->add_option($name,$_POST[$name])) {
+                echo 'Error';
+              }
+            }
+          }
+        } else {
           if (isset($_POST[$field_name])) {
             if (!$this->add_option($field_name,$_POST[$field_name])) {
               echo 'Error';
             }
           }
+        }
           break;
       }
     }
